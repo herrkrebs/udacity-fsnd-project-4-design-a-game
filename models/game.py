@@ -52,14 +52,14 @@ class Game(ndb.Model):
     def printBoard(self, board):
         """Returns board in readable format"""
 
-        frow = "   " + board.row1[0] + " | " + board.row1[1] + " | " + \
-               board.row1[2]
+        frow = "   " + board[0][0] + " | " + board[0][1] + " | " + \
+               board[0][2]
         row1bot = "--------------"
-        srow = "   " + board.row2[0] + " | " + board.row2[1] + " | " + \
-               board.row2[2]
+        srow = "   " + board[1][0] + " | " + board[1][1] + " | " + \
+               board[1][2]
         row2bot = "--------------"
-        trow = "   " + board.row3[0] + " | " + board.row3[1] + " | " + \
-               board.row3[2]
+        trow = "   " + board[2][0] + " | " + board[2][1] + " | " + \
+               board[2][2]
 
         return BoardMessage(row1a=frow, row1b=row1bot, row2a=srow,
                             row2b=row2bot, row3a=trow)
