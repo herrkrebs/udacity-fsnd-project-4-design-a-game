@@ -44,12 +44,12 @@ class Game(ndb.Model):
         form.urlsafe_key = self.key.urlsafe()
         form.player_one_name = self.player_one.get().name
         form.player_two_name = self.player_two.get().name
-        form.board = self.printBoard(self.board)
+        form.board = self.print_board(self.board)
         form.game_state = str(self.state)
         form.message = message
         return form
 
-    def printBoard(self, board):
+    def print_board(self, board):
         """Returns board in readable format"""
 
         frow = "   " + board[0][0] + " | " + board[0][1] + " | " + \
@@ -69,17 +69,23 @@ class Game(ndb.Model):
 
     def won(self):
         """Ends the game"""
-        self.state = GameState.WON
-        self.put()
+        self.finish_game(GameState.WON)
 
     def tie(self):
         """Sets the state of the game to a tie"""
-        self.state = GameState.TIE
-        self.put()
+        self.finish_game(GameState.TIE)
 
     def cancel(self):
         """Cancels the game"""
-        self.state = GameState.CANCELLED
+        self.finish_game(GameState.CANCELLED)
+
+    def finish_game(self, state):
+        """Sets the state, adds the state to the history and saves the game"""
+        self.state = state
+
+        last_move = self.history[-1]
+        last_move['state'] = str(self.state)
+
         self.put()
 
     def is_active_player(self, player):
@@ -98,7 +104,6 @@ class Game(ndb.Model):
         """Places the players token on the board"""
         self.board[x][y] = self.get_active_player_token()
         self.update_history(x, y)
-        self.switch_active_player()
 
     def get_active_player_token(self):
         """Returns the token for the active player"""
@@ -113,7 +118,8 @@ class Game(ndb.Model):
         move = {
             'player': player.name,
             'x': x,
-            'y': y
+            'y': y,
+            'state': str(self.state)
         }
 
         self.history.append(move)
@@ -125,7 +131,7 @@ class Game(ndb.Model):
             self.active_player = self.player_one
 
     def is_board_full(self):
-        return len(self.history) == 9
+        return len(self.history) >= 9
 
     def has_active_player_won(self):
         """Checks if the game is finished"""
@@ -191,6 +197,7 @@ class GameMoveHistory(messages.Message):
     player_name = messages.StringField(1, required=True)
     x = messages.IntegerField(2, required=True)
     y = messages.IntegerField(3, required=True)
+    state = messages.StringField(4)
 
 
 class GameMoveHistoryForm(messages.Message):

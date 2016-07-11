@@ -124,10 +124,10 @@ class TicTacToeApi(remote.Service):
             raise endpoints.BadRequestException('Token placed outside board')
 
         if not game.is_active_player(player):
-            return endpoints.ForbiddenException('It\'s not your turn!')
+            raise endpoints.ForbiddenException('It\'s not your turn!')
 
         if not game.is_field_empty(x, y):
-            return endpoints.ForbiddenException(
+            raise endpoints.ForbiddenException(
                 'Field at [{}][{}] is not empty!'.format(x, y))
 
         game.place_token(x, y)
@@ -139,6 +139,8 @@ class TicTacToeApi(remote.Service):
         if game.is_board_full():
             game.tie()
             return game.to_form('Game is a tie!')
+
+        game.switch_active_player()
 
         game.put()
         return game.to_form('Token placed at [{}][{}]!'.format(x, y))
@@ -207,7 +209,8 @@ class TicTacToeApi(remote.Service):
 
         return GameMoveHistoryForm(histories=[
             GameMoveHistory(player_name=move['player'], x=move['x'],
-                            y=move['y']) for move in game.history])
+                            y=move['y'], state=move['state'])
+            for move in game.history])
 
 
 api = endpoints.api_server([TicTacToeApi])
