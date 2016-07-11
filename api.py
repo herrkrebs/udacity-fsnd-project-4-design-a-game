@@ -109,7 +109,7 @@ class TicTacToeApi(remote.Service):
         """Makes a move. Returns a game state with message"""
         game = get_by_urlsafe(request.urlsafe_game_key, Game)
         if game.is_game_over():
-            return game.to_form('Game already over!')
+            return endpoints.ForbiddenException('Game already over!')
 
         x = request.x
         y = request.y
@@ -124,10 +124,11 @@ class TicTacToeApi(remote.Service):
             raise endpoints.BadRequestException('Token placed outside board')
 
         if not game.is_active_player(player):
-            return game.to_form('It\'s not your turn!')
+            return endpoints.ForbiddenException('It\'s not your turn!')
 
         if not game.is_field_empty(x, y):
-            return game.to_form('Field at [{}][{}] is not empty!'.format(x, y))
+            return endpoints.ForbiddenException(
+                'Field at [{}][{}] is not empty!'.format(x, y))
 
         game.place_token(x, y)
 
@@ -152,7 +153,8 @@ class TicTacToeApi(remote.Service):
         game = get_by_urlsafe(request.urlsafe_game_key, Game)
 
         if game.is_game_over():
-            return game.to_form('You can\'t cancel an already finished game')
+            return endpoints.ForbiddenException(
+                'You can\'t cancel an already finished game')
 
         game.cancel()
 
