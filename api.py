@@ -109,7 +109,7 @@ class TicTacToeApi(remote.Service):
         """Makes a move. Returns a game state with message"""
         game = get_by_urlsafe(request.urlsafe_game_key, Game)
         if game.is_game_over():
-            return endpoints.ForbiddenException('Game already over!')
+            raise endpoints.ForbiddenException('Game already over!')
 
         x = request.x
         y = request.y
@@ -155,7 +155,7 @@ class TicTacToeApi(remote.Service):
         game = get_by_urlsafe(request.urlsafe_game_key, Game)
 
         if game.is_game_over():
-            return endpoints.ForbiddenException(
+            raise endpoints.ForbiddenException(
                 'You can\'t cancel an already finished game')
 
         game.cancel()
