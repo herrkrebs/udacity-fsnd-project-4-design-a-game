@@ -44,22 +44,25 @@ class Game(ndb.Model):
         form.urlsafe_key = self.key.urlsafe()
         form.player_one_name = self.player_one.get().name
         form.player_two_name = self.player_two.get().name
-        form.board = self.board_to_string()
+        form.board = self.printBoard()
         form.game_state = str(self.state)
         form.message = message
         return form
 
-    def board_to_string(self):
-        return '{}|{}|{}\n-----\n{}|{}|{}\n-----\n{}|{}|{}' \
-            .format(self.board[0][0],
-                    self.board[0][1],
-                    self.board[0][2],
-                    self.board[1][0],
-                    self.board[1][1],
-                    self.board[1][2],
-                    self.board[2][0],
-                    self.board[2][1],
-                    self.board[2][2])
+    def printBoard(self, board):
+        """Returns board in readable format"""
+
+        frow = "   " + board.row1[0] + " | " + board.row1[1] + " | " + \
+               board.row1[2]
+        row1bot = "--------------"
+        srow = "   " + board.row2[0] + " | " + board.row2[1] + " | " + \
+               board.row2[2]
+        row2bot = "--------------"
+        trow = "   " + board.row3[0] + " | " + board.row3[1] + " | " + \
+               board.row3[2]
+
+        return BoardMessage(row1a=frow, row1b=row1bot, row2a=srow,
+                            row2b=row2bot, row3a=trow)
 
     def is_game_over(self):
         return self.state != GameState.ACTIVE
@@ -139,12 +142,22 @@ class Game(ndb.Model):
                        0] == token)
 
 
+class BoardMessage(messages.Message):
+    """Output readable board"""
+    row1a = messages.StringField(1)
+    row1b = messages.StringField(2)
+    row2a = messages.StringField(3)
+    row2b = messages.StringField(4)
+    row3a = messages.StringField(5)
+    message = messages.StringField(6)
+
+
 class GameForm(messages.Message):
     """GameForm for outbound game state information"""
     urlsafe_key = messages.StringField(1, required=True)
     player_one_name = messages.StringField(2, required=True)
     player_two_name = messages.StringField(3, required=True)
-    board = messages.StringField(4, required=True)
+    board = messages.MessageField(BoardMessage, 4, required=True)
     game_state = messages.StringField(5, required=True)
     message = messages.StringField(6, required=True)
 
