@@ -1,16 +1,8 @@
-"""models.py - This file contains the class definitions for the Datastore
-entities used by the Game. Because these classes are also regular Python
-classes they can include methods (such as 'to_form' and 'new_game')."""
+"""game.py - Contains the games models and forms"""
 
 from protorpc import messages
 from google.appengine.ext import ndb
 from google.appengine.ext.ndb import msgprop
-
-
-class User(ndb.Model):
-    """User profile"""
-    name = ndb.StringProperty(required=True)
-    email = ndb.StringProperty()
 
 
 class GameState(messages.Enum):
@@ -190,15 +182,3 @@ class GameMoveHistory(messages.Message):
 class GameMoveHistoryForm(messages.Message):
     """History of moves of a game"""
     histories = messages.MessageField(GameMoveHistory, 1, repeated=True)
-
-
-class UserRanking(messages.Message):
-    """A user ranking"""
-    position = messages.IntegerField(1, required=True)
-    player_name = messages.StringField(2, required=True)
-    wins = messages.IntegerField(3, required=True)
-
-
-class UserRankingsForm(messages.Message):
-    """Represents a list of user rankings"""
-    rankings = messages.MessageField(UserRanking, 1, repeated=True)

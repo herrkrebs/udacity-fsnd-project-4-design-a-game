@@ -2,7 +2,8 @@
 
 from google.appengine.ext import ndb
 import endpoints
-from models import Game, GameState
+
+from models.game import Game, GameState
 
 
 def get_by_urlsafe(urlsafe, model):

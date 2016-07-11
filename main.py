@@ -7,7 +7,7 @@ from itertools import groupby
 import webapp2
 from google.appengine.api import mail, app_identity
 
-from models import Game, GameState
+from models.game import Game, GameState
 
 
 class SendReminderEmail(webapp2.RequestHandler):

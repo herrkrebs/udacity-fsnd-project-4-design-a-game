@@ -5,15 +5,16 @@ import endpoints
 from protorpc import remote, messages
 from google.appengine.ext import ndb
 
-from models import User, Game, GameState, UserRanking
-from models import (
+from models.user import User, UserRankingsForm, UserRanking
+from models.game import (
+    Game,
+    GameState,
     StringMessage,
     NewGameForm,
     GameForm,
     MakeMoveForm,
     ActiveGamesForm,
     GameMoveHistoryForm,
-    UserRankingsForm,
     GameMoveHistory
 )
 
