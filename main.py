@@ -3,6 +3,7 @@
 """main.py - This file contains handlers that are called by taskqueue and/or
 cronjobs."""
 import logging
+from itertools import groupby
 
 import webapp2
 from google.appengine.api import mail, app_identity
@@ -17,16 +18,18 @@ class SendReminderEmail(webapp2.RequestHandler):
         Called every hour using a cron job"""
         app_id = app_identity.get_application_id()
         games = Game.query(Game.state == GameState.ACTIVE)
-        for game in games:
+
+        for user_key, group in groupby(games, lambda game: game.active_player):
+            user = user_key.get()
             subject = 'This is a reminder!'
             body = 'Hello {}, it\'s your turn!'.format(
-                game.active_player.get().name)
+                user.name)
 
             # This will send notification emails,
             # the arguments to send_mail are:
             # from, to, subject, body
             mail.send_mail('noreply@{}.appspotmail.com'.format(app_id),
-                           game.active_player.email,
+                           user.email,
                            subject,
                            body)
 
