@@ -87,7 +87,8 @@ class Game(ndb.Model):
         return player.key == self.active_player
 
     def are_coordinates_on_board(self, x, y):
-        return x not in range(3) or y not in range(3)
+        """Checks if coordinates are on the board"""
+        return x in range(3) and y in range(3)
 
     def is_field_empty(self, x, y):
         """Checks if the field on the board is empty"""
