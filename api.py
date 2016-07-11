@@ -122,6 +122,9 @@ class TicTacToeApi(remote.Service):
                 'A player with the name {} doesn\'t exist'.format(
                     request.player_name))
 
+        if not game.are_coordinates_on_board(x, y):
+            raise endpoints.BadRequestException('Token placed outside board')
+
         if not game.is_active_player(player):
             return game.to_form('It\'s not your turn!')
 

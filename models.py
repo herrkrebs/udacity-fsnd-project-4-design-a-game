@@ -91,6 +91,9 @@ class Game(ndb.Model):
         """Checks if the player is active"""
         return player.key == self.active_player
 
+    def are_coordinates_on_board(self, x, y):
+        return x not in range(3) or y not in range(3)
+
     def is_field_empty(self, x, y):
         """Checks if the field on the board is empty"""
         return self.board[x][y] == self.EMPTY_TOKEN
