@@ -133,13 +133,13 @@ class TicTacToeApi(remote.Service):
 
         game.place_token(x, y)
 
+        if game.has_active_player_won():
+            game.won()
+            return game.to_form('You win!')
+        
         if game.is_board_full():
-            if game.has_active_player_won():
-                game.won()
-                return game.to_form('You win!')
-            else:
-                game.tie()
-                return game.to_form('Game is a tie!')
+            game.tie()
+            return game.to_form('Game is a tie!')
 
         game.put()
         return game.to_form('Token placed at [{}][{}]!'.format(x, y))
