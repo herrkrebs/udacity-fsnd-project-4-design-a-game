@@ -24,7 +24,7 @@ from utils import get_by_urlsafe, number_of_won_games
 
 NEW_GAME_REQUEST = endpoints.ResourceContainer(NewGameForm)
 
-GET_GAME_REQUEST = endpoints.ResourceContainer(
+URLSAFE_GAME_KEY_REQUEST = endpoints.ResourceContainer(
     urlsafe_game_key=messages.StringField(1)
 )
 
@@ -38,20 +38,12 @@ USER_REQUEST = endpoints.ResourceContainer(
     email=messages.StringField(2)
 )
 
-CANCEL_GAME_REQUEST = endpoints.ResourceContainer(
-    urlsafe_game_key=messages.StringField(1)
-)
-
 GET_USER_GAMES_REQUEST = endpoints.ResourceContainer(
     player_name=messages.StringField(1)
 )
 
 GET_USER_RANKINGS_REQUEST = endpoints.ResourceContainer(
 
-)
-
-GET_GAME_HISTORY_REQUEST = endpoints.ResourceContainer(
-    urlsafe_game_key=messages.StringField(1)
 )
 
 
@@ -97,7 +89,7 @@ class TicTacToeApi(remote.Service):
 
         return game.to_form('Good luck playing Tic-Tac-Toe!')
 
-    @endpoints.method(request_message=GET_GAME_REQUEST,
+    @endpoints.method(request_message=URLSAFE_GAME_KEY_REQUEST,
                       response_message=GameForm,
                       path='game/{urlsafe_game_key}',
                       name='get_game',
@@ -149,7 +141,7 @@ class TicTacToeApi(remote.Service):
         game.put()
         return game.to_form('Token placed at [{}][{}]!'.format(x, y))
 
-    @endpoints.method(request_message=CANCEL_GAME_REQUEST,
+    @endpoints.method(request_message=URLSAFE_GAME_KEY_REQUEST,
                       response_message=GameForm,
                       path='game/{urlsafe_game_key}/cancel',
                       name='cancel_game',
@@ -198,7 +190,7 @@ class TicTacToeApi(remote.Service):
                                   player_name=ranking[1]) for index, ranking in
                       enumerate(rankings)])
 
-    @endpoints.method(request_message=GET_GAME_HISTORY_REQUEST,
+    @endpoints.method(request_message=URLSAFE_GAME_KEY_REQUEST,
                       response_message=GameMoveHistoryForm,
                       path='game/{urlsafe_game_key}/history',
                       name='get_game_history',
