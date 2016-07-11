@@ -44,7 +44,7 @@ class Game(ndb.Model):
         form.urlsafe_key = self.key.urlsafe()
         form.player_one_name = self.player_one.get().name
         form.player_two_name = self.player_two.get().name
-        form.board = self.printBoard()
+        form.board = self.printBoard(self.board)
         form.game_state = str(self.state)
         form.message = message
         return form
