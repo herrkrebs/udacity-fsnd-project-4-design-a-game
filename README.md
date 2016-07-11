@@ -20,6 +20,13 @@ The player who places three tokens in a horizontal, vertical or diagonal row, wi
 - models.py: Entity and message definitions including helper methods.
 - utils.py: Helper function for retrieving ndb.Models by urlsafe Key string.
 
+## Score keeping:
+Every move is stored on the board.
+If a player has three tokens in a horizontal, vertical or diagonal row, he wins.
+If the board is full and nobody has three in a row, its a tie.
+The game object can have the following states. ACTIVE, CANCELLED, WON, TIE.
+If the state is TIE, the acitve_player is the winner.
+
 ## Api Endpoints:
 
 - **create_user**
