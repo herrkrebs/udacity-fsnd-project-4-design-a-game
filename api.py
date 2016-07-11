@@ -9,8 +9,17 @@ from protorpc import remote, messages
 from google.appengine.ext import ndb
 
 from models import User, Game, GameState, UserRanking
-from models import StringMessage, NewGameForm, GameForm, MakeMoveForm, \
-    ActiveGamesForm, GameMoveHistoryForm, UserRankingsForm, GameMoveHistory
+from models import (
+    StringMessage,
+    NewGameForm,
+    GameForm,
+    MakeMoveForm,
+    ActiveGamesForm,
+    GameMoveHistoryForm,
+    UserRankingsForm,
+    GameMoveHistory
+)
+
 from utils import get_by_urlsafe, number_of_won_games
 
 NEW_GAME_REQUEST = endpoints.ResourceContainer(NewGameForm)
