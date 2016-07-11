@@ -136,7 +136,7 @@ class TicTacToeApi(remote.Service):
         if game.has_active_player_won():
             game.won()
             return game.to_form('You win!')
-        
+
         if game.is_board_full():
             game.tie()
             return game.to_form('Game is a tie!')
@@ -186,7 +186,7 @@ class TicTacToeApi(remote.Service):
         players = User.query()
         rankings = [(number_of_won_games(player), player.name) for player in
                     players]
-        rankings.sort(key=lambda ranking: ranking[0])
+        rankings.sort(key=lambda ranking: ranking[0], reverse=True)
 
         return UserRankingsForm(
             rankings=[UserRanking(position=index + 1, wins=ranking[0],
