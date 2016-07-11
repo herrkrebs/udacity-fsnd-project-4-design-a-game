@@ -135,7 +135,7 @@ class TicTacToeApi(remote.Service):
 
         if game.is_board_full():
             if game.has_active_player_won():
-                game.player_won()
+                game.won()
                 return game.to_form('You win!')
             else:
                 game.tie()

@@ -75,16 +75,18 @@ class Game(ndb.Model):
     def is_game_over(self):
         return self.state != GameState.ACTIVE
 
-    def player_won(self):
+    def won(self):
         """Ends the game"""
         self.state = GameState.WON
         self.put()
 
     def tie(self):
+        """Sets the state of the game to a tie"""
         self.state = GameState.TIE
         self.put()
 
     def cancel(self):
+        """Cancels the game"""
         self.state = GameState.CANCELLED
         self.put()
 

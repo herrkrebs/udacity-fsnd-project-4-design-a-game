@@ -1,8 +1,24 @@
 What additional properties did you add to your models and why?
 
--
+I created a new model for the game state.
+
+Game:
+The user property was renamed and an additional user property was added, because Tic-Tac-Toe is a two player game.
+I also added a property for the active player to check if the player in the MakeMove request is active. It's also used to check who won the game.
+A board property was added to store the placed tokens.
+The history property was added to keep track of the move history.
+I added a state property too keep track of the game state and removed the game_over property.
+
 
 
 What were some of the trade-offs or struggles you faced when implementing the new game logic?
 
--
+At first I added a cancelled property for the cancel_game endpoint.
+After testing the game a bit, I realised that I didn't check for ties.
+I didn't want to add additional properties to the game model to keep track of the game state.
+So I decided to add the state property to the game model and removed the game_over and cancelled property.
+
+Another question was how to implement the game board.
+I could have added a new class with just one property,
+but I think that it would be to much.
+That's why I decided to add a property to the game instead.
